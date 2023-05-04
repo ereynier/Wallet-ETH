@@ -6,6 +6,7 @@ import Wallet from "./artifacts/contracts/Wallet.sol/Wallet.json"
 import { ToastError } from "./components/ToastError"
 import { ToastPending } from './components/ToastPending'
 import { ToastSuccess } from './components/ToastSuccess'
+import Link from 'next/link'
 
 let WalletAddress = "0x76aab5A8c9373C2059d45B8E5D3129Cfb28765f4"
 
@@ -157,7 +158,7 @@ export default function Home() {
 
 
   return (
-  <main className="bg-gray-100 min-h-screen px-4 py-10 sm:py-16 md:px-8 lg:px-16 xl:px-24">
+  <main className="bg-gray-100 min-h-screen px-4 py-10 sm:py-16 md:px-8 lg:px-16 xl:px-24 flex-col, items-center">
     <div className="flex justify-center flex-col">
       <ToastError error={error} onClick={() => setError("")} />
       <ToastPending info={info} onClick={() => setInfo("")} />
@@ -194,6 +195,9 @@ export default function Home() {
           </div>
         </div>
       </div>
+    </div>
+    <div className='mt-20'>
+      <p className='text-center ml-3 text-sm font-medium text-gray-900 dark:text-gray-500'>Portfolio: <Link href={"http://ereynier.me"} target='_blank' className='hover:underline'>ereynier.me</Link></p>
     </div>
   </main>
   )
