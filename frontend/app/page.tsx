@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { ethers } from 'ethers'
 import Wallet from "./artifacts/contracts/Wallet.sol/Wallet.json"
 import { ToastError } from "./components/ToastError"
+import { ToastPending } from './components/ToastPending'
+import { ToastSuccess } from './components/ToastSuccess'
 
 let WalletAddress = "0x76aab5A8c9373C2059d45B8E5D3129Cfb28765f4"
 
@@ -20,6 +22,7 @@ export default function Home() {
   const [error, setError] = useState("")
   const [totalBalance, setTotalBalance] = useState(0)
   const [useCustomReceiverAddress, setUseCustomReceiverAddress] = useState(false)
+  const [info, setInfo] = useState("")
 
 
   useEffect(() => {
@@ -81,13 +84,18 @@ export default function Home() {
           value: ethers.parseEther(amountSend),
         }
         const transac = await contract.deposit({value: ethers.parseEther(amountSend)})
+        setInfo("Deposit pending...")
         await transac.wait()
+        setInfo("")
+        setAmountSend("")
         // const transaction = await signer.sendTransaction(tx)
         // await transaction.wait()
-        setAmountSend("")
         getBalance()
         getTotalBalance()
-        setSuccess("Transaction successful")
+        setSuccess("Deposit successful")
+        setTimeout(() => {
+          setSuccess("")
+        }, 3000)
 
       } catch(err) {
         setError(String(err).slice(0,50) + "...")
@@ -110,12 +118,17 @@ export default function Home() {
       try {
         const receiver = useCustomReceiverAddress ? receiverAddress : accounts[0]
         const transac = await contract.withdraw(receiver ,ethers.parseEther(withdrawAmount))
+        setInfo("Withdraw pending...")
         await transac.wait()
+        setInfo("")
         setWithdrawAmount("")
         setReceiverAddress("")
         getBalance()
         getTotalBalance()
-        setSuccess("Transaction successful")
+        setSuccess("Withdraw successful")
+        setTimeout(() => {
+          setSuccess("")
+        }, 3000)
       } catch (err) {
         console.log({err})
         setError(String(err).slice(0,50) + "...")
@@ -145,7 +158,11 @@ export default function Home() {
 
   return (
   <main className="bg-gray-100 min-h-screen px-4 py-10 sm:py-16 md:px-8 lg:px-16 xl:px-24">
-    <ToastError error={error} onClick={() => setError("")} />
+    <div className="flex justify-center flex-col">
+      <ToastError error={error} onClick={() => setError("")} />
+      <ToastPending info={info} onClick={() => setInfo("")} />
+      <ToastSuccess msg={success} onClick={() => setSuccess("")} />
+    </div>
     <h2 className="text-2xl font-bold mb-8 text-center">Total balance: {totalBalance} ETH</h2>
     <div className="max-w-3xl mx-auto">
       <div className="bg-white rounded-lg shadow-lg px-6 py-8 mb-8">
@@ -171,7 +188,7 @@ export default function Home() {
                 </div>
                 <input type="text" placeholder="Amount" className={`m-2 sm:m-3 w-full px-3 py-2 rounded-md border ${ isNaN(parseInt(withdrawAmount)) && withdrawAmount ? "border-red-500 focus:border-red-700 focus:ring focus:ring-red-200 text-red-700 " :  "border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200"} focus:ring-opacity-50 appearance-none`} onChange={changeWithdrawAmount} value={withdrawAmount}/>
                 {useCustomReceiverAddress && <input type="text" placeholder="Receiver Address" className="w-full px-3 py-2 rounded-md border border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 appearance-none" onChange={changeReceiverAddress} value={receiverAddress}/>}
-                <button disabled={isNaN(parseInt(withdrawAmount)) && withdrawAmount != undefined} className={` ${isNaN(parseInt(withdrawAmount)) && withdrawAmount ? "bg-indigo-800 opacity-80" : "bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700" } rounded-md w-full px-4 py-2 text-white`} onClick={withdraw}>Send</button>
+                <button disabled={isNaN(parseInt(withdrawAmount)) && withdrawAmount != undefined} className={` ${isNaN(parseInt(withdrawAmount)) && withdrawAmount ? "bg-indigo-800 opacity-80" : "bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700" } rounded-md w-full px-4 py-2 text-white`} onClick={withdraw}>Withdraw</button>
               </div>
             </div>
           </div>
