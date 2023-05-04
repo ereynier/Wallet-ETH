@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { ethers } from 'ethers'
-import Wallet from "../../backend/artifacts/contracts/Wallet.sol/Wallet.json"
+import Wallet from "./artifacts/contracts/Wallet.sol/Wallet.json"
 import { ToastError } from "./components/ToastError"
 
 let WalletAddress = "0x76aab5A8c9373C2059d45B8E5D3129Cfb28765f4"
