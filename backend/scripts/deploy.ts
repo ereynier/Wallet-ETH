@@ -9,7 +9,7 @@ async function main() {
 
   console.log("Wallet deployed to:", wallet.address);
 
-  if (network.name === "goerli") {
+  if (network.name === "sepolia") {
     console.log("Verifying smartcontract on Etherscan");
     await wallet.deployTransaction.wait(6)
     await verify(wallet.address, []);
