@@ -5,7 +5,7 @@ import { ethers } from 'ethers'
 import Wallet from "../../backend/artifacts/contracts/Wallet.sol/Wallet.json"
 import { ToastError } from "./components/ToastError"
 
-let WalletAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0"
+let WalletAddress = "0x76aab5A8c9373C2059d45B8E5D3129Cfb28765f4"
 
 export default function Home() {
 

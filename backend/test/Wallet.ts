@@ -54,12 +54,12 @@ describe("Wallet", function () {
 
 
   describe("Withdraw", function () {
-    it("Should withdraw 500 wei", async function () {
+    it("Should withdraw 500 wei from owner to addr1", async function () {
       await token.withdraw(this.addr1.address, 500);
       let getter = await token.getBalance();
       expect(getter).to.equal(500);
     });
-    it ("Sould decrease the contract balance", async function () {
+    it ("Should decrease the contract balance", async function () {
       let getter = await token.getContractBalance();
       expect(getter).to.equal(1500);
     });
